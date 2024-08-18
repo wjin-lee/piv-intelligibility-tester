@@ -1,27 +1,57 @@
-# PivIntelligibilityTester
+# ASIST
+This is an application meant to automate the perception-transcription test protocol for part IV project #37. 
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.6.
+## Setup
+1. Install Node.JS version `>= 20` from https://nodejs.org/en/download \
+   _(not guaranteed to work with other versions!)_
 
-## Development server
+2. Clone this repository.
+```bash
+git clone https://github.com/wjin-lee/piv-intelligibility-tester.git
+```
+3. Install the npm dependencies
+```bash
+npm install
+```
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+4. Install Tauri dependencies by following the instructions for your operating system at https://v2.tauri.app/start/prerequisites/
+> NOTE 1: Opt for the standard Rust installation.
 
-## Code scaffolding
+> NOTE 2: Ensure your terminal can access the newly installed Rust binaries. (Check if `cargo` outputs help text.) If your terminal cannot find the installed Rust binaries, try restarting your terminal or computer.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+5. Install the Tauri CLI
+ ```bash
+cargo install tauri-cli
+```
 
-## Build
+## Development Server
+During development, run the following command to test your app and get live reloading.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```bash
+cargo tauri dev
+```
 
-## Running unit tests
+If this is the first time you are using the Angular CLI, you may be prompted with the following message:
+![Angular survey msg](./screenshots/angular-prompt-screenshot.png)
+You must give an answer to the question before tauri can start. In some cases, this message may not correctly display. If that is the case, please try `npm run start` manually, then ensure it can run before running `cargo tauri dev` again.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+If you get the following error, you probably forgot to `npm install` in that folder.
+![alt text](./screenshots/cargo-tauri-error.png)
 
-## Running end-to-end tests
+## Compiling the Binary
+To compile the project to a binary, run the following command from the respective folder. 
+```bash
+cargo tauri build
+```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+If you get the following error, you probably forgot to `npm install` in that folder.
+![alt text](./screenshots/cargo-tauri-error.png)
 
-## Further help
+After the build finishes, output directories for your current platform's setup files will be printed to console.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Alternatively, an executable can also be found in `./src-tauri/target/release`.
+
+### Note on Cross-Platform Compilation
+Because Tauri relies heavily on native toolchains for compilation, cross-compilation is not currently supported. I.e. to compile a MacOS binary, we must run `cargo tauri build` on the MacOS environment we are targetting. Same with Windows as well as Linux.
+
+See the [Tauri docs](https://tauri.app/v1/guides/building/cross-platform/) for more on this.
