@@ -1,0 +1,35 @@
+<div
+  class="w-full h-full flex flex-col justify-center items-center text-center gap-20"
+>
+  <!-- Titles & headers -->
+  <div class="flex flex-col gap-2">
+    <h1 class="font-bold text-6xl tracking-[0.7em] indent-[0.7em]">ASIST</h1>
+    <p class="tracking-wide">
+      <span class="letter-emphasis">A</span>utomated
+      <span class="letter-emphasis">S</span>peech
+      <span class="letter-emphasis">I</span>ntelligibility
+      <span class="letter-emphasis">S</span>creening
+      <span class="letter-emphasis">T</span>ool
+    </p>
+    <p class="text-sm font-mono tracking-tighter text-slate-500">
+      v{{ appVersion }} ({{ tauriVersion }})
+    </p>
+  </div>
+
+  <!-- Actions -->
+  <div class="flex flex-col gap-3">
+    <button hlmBtn size="lg">
+      <hlm-icon size="sm" name="lucideAperture" class="mr-1" />
+      Load Protocol
+    </button>
+    <div class="flex justify-center items-center gap-3">
+      <brn-separator hlmSeparator class="w-1/4" />
+      <span>OR</span>
+      <brn-separator hlmSeparator class="w-1/4" />
+    </div>
+    <button hlmBtn size="sm" variant="secondary">
+      <hlm-icon size="sm" name="lucideSettings" class="mr-1" />
+      Calibrate
+    </button>
+  </div>
+</div>
