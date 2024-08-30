@@ -3,20 +3,14 @@ module.exports = {
   presets: [require("@spartan-ng/ui-core/hlm-tailwind-preset")],
   content: ["./src/**/*.{html,ts}", "./src/components/spartan/**/*.{html,ts}"],
   theme: {
-    fontFamily: {
-      mona: ["MonaSans"],
-      mono: [
-        "ui-monospace",
-        "SFMono-Regular",
-        "Menlo",
-        "Monaco",
-        "Consolas",
-        "Liberation Mono",
-        "Courier New",
-        "monospace",
-      ],
+    extend: {
+      fontFamily: {
+        mona: ["MonaSans"],
+      },
+      colors: {
+        lime: "#00ed64",
+      },
     },
-    extend: {},
   },
   plugins: [],
 };

@@ -30,6 +30,18 @@
       ],
       "@spartan-ng/ui-icon-helm": [
         "./src/app/components/spartan/ui-icon-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-input-helm": [
+        ".\\src/app/components/spartan/ui-input-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-radiogroup-helm": [
+        ".\\src/app/components/spartan/ui-radiogroup-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-sonner-helm": [
+        ".\\src/app/components/spartan/ui-sonner-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-formfield-helm": [
+        ".\\src/app/components/spartan/ui-formfield-helm/src/index.ts"
       ]
     }
   },

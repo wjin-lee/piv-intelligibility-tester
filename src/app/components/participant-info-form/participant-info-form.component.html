@@ -1,0 +1,36 @@
+<form
+  [formGroup]="participantInfo"
+  (ngSubmit)="onSubmit()"
+  class="flex flex-col gap-5"
+>
+  <hlm-form-field>
+    <input
+      id="participantId"
+      type="text"
+      placeholder="Participant ID"
+      formControlName="participantId"
+      hlmInput
+      required="true"
+      autocomplete="off"
+    />
+  </hlm-form-field>
+
+  <brn-radio-group
+    class="mb-4 font-mono text-sm font-medium space-y-1"
+    hlm
+    formControlName="nativeness"
+  >
+    <brn-radio hlm value="L1">
+      <hlm-radio-indicator indicator />
+      Native (L1)
+    </brn-radio>
+    <brn-radio hlm value="L2">
+      <hlm-radio-indicator indicator />
+      Non-native (L2)
+    </brn-radio>
+  </brn-radio-group>
+
+  <button hlmBtn type="submit" size="lg" routerLink="/perception-test">
+    Save Participant
+  </button>
+</form>

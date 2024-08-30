@@ -14,9 +14,9 @@ export class PerceptionTestService {
   activeProtocol: PerceptionTestProtocol | null = null;
   stepCounter: number = 0;
 
-  private participant = new BehaviorSubject<Participant | null>(null);
+  private participantSubject = new BehaviorSubject<Participant | null>(null);
   participant$: Observable<Participant | null> =
-    this.participant.asObservable();
+    this.participantSubject.asObservable();
 
   private activeProtocolSubject =
     new BehaviorSubject<PerceptionTestProtocol | null>(null);
@@ -34,7 +34,6 @@ export class PerceptionTestService {
   ): { success: true } | { success: false; reason: string } {
     // Verify if all calibration keys are present
     const calibrationKeys = this.WIP_getCalibrationKeys();
-    console.log(calibrationKeys);
     for (const protocolStep of sequence) {
       if (
         protocolStep.action == ProtocolActionType.TRANSCRIPTION &&
@@ -71,10 +70,15 @@ export class PerceptionTestService {
       return { success: false, reason: actionSequenceValidationResult.reason };
     }
 
+    this.activeProtocolSubject.next(parseResult.data);
     return { success: true };
   }
 
-  hasProtocol() {
-    return this.activeProtocol !== null;
+  clearProtocol() {
+    this.activeProtocolSubject.next(null);
+  }
+
+  setParticipant(newParticipantValue: Participant | null) {
+    this.participantSubject.next(newParticipantValue);
   }
 }
