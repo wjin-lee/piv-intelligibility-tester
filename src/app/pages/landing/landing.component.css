@@ -1,4 +1,7 @@
 .letter-emphasis {
   font-weight: bold;
   text-decoration: underline;
+  /* text-sm */
+  font-size: 0.875rem /* 14px */;
+  line-height: 1.25rem /* 20px */;
 }
