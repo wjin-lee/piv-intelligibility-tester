@@ -20,8 +20,9 @@ npm install
 > NOTE 2: Ensure your terminal can access the newly installed Rust binaries. (Check if `cargo` outputs help text.) If your terminal cannot find the installed Rust binaries, try restarting your terminal or computer.
 
 5. Install the Tauri CLI
+> NOTE: At the time of writing, Tauri 2.0 is in beta with the release candidate being available. In the future, this should be updated to the 2.0 stable release.
  ```bash
-cargo install tauri-cli
+cargo install tauri-cli@^2.0.0-rc
 ```
 
 ## Development Server
