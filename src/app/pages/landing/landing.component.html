@@ -18,10 +18,11 @@
 
   <!-- Actions -->
   <div class="flex flex-col gap-3">
-    <button hlmBtn size="lg" (click)="promptFileSelection()">
-      <hlm-icon size="sm" name="lucideAperture" class="mr-1" />
-      Load Protocol
+    <button hlmBtn size="lg" routerLink="/perception-test">
+      <hlm-icon size="sm" name="lucideEar" class="mr-1" />
+      Begin Perception Test
     </button>
+
     <div class="flex justify-center items-center gap-3">
       <brn-separator hlmSeparator class="w-1/4" />
       <span>OR</span>
@@ -32,13 +33,4 @@
       Calibrate
     </button>
   </div>
-
-  <!-- Hidden file select that will be triggered via Load Protocol btn -->
-  <input
-    #protocolFile
-    type="file"
-    accept=".json,application/json"
-    class="hidden"
-    (change)="onFileSelected($event)"
-  />
 </div>

@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Participant } from '../models/participant.model';
 import { PerceptionTestProtocol } from '../schema/perception-test-protocol.schema';
 import {
   ProtocolAction,
@@ -11,6 +13,15 @@ import {
 export class PerceptionTestService {
   activeProtocol: PerceptionTestProtocol | null = null;
   stepCounter: number = 0;
+
+  private participant = new BehaviorSubject<Participant | null>(null);
+  participant$: Observable<Participant | null> =
+    this.participant.asObservable();
+
+  private activeProtocolSubject =
+    new BehaviorSubject<PerceptionTestProtocol | null>(null);
+  activeProtocol$: Observable<PerceptionTestProtocol | null> =
+    this.activeProtocolSubject.asObservable();
 
   constructor() {}
 
@@ -61,5 +72,9 @@ export class PerceptionTestService {
     }
 
     return { success: true };
+  }
+
+  hasProtocol() {
+    return this.activeProtocol !== null;
   }
 }
