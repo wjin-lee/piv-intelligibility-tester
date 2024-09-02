@@ -55,7 +55,7 @@ export class AssessmentComponent {
 
       switch (step?.action.type) {
         case ProtocolActionType.TRANSCRIPTION:
-          this.playAudio(step.action.audioFilePool[0]);
+          this.playAudio(step.action.audioFilePath);
           break;
 
         case ProtocolActionType.BREAK:
@@ -72,6 +72,11 @@ export class AssessmentComponent {
         if (transcriptionRef !== undefined) {
           const transcriptFormResult = transcriptionRef.getFormState();
           console.log(transcriptFormResult);
+          this.perceptionTestService.recordTranscriptionResult(
+            this.currentStep.action.label,
+            transcriptFormResult.transcription || '',
+            transcriptFormResult.intelligibilityScore
+          );
 
           transcriptionRef.resetInputs();
         }

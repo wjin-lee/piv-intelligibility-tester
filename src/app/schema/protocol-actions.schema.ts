@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 export enum ProtocolActionType {
+  TRANSCRIPTION_POOL = 'TRANSCRIPTION_POOL',
   TRANSCRIPTION = 'TRANSCRIPTION',
   REPEAT = 'REPEAT',
   BREAK = 'BREAK',
@@ -10,10 +11,17 @@ export const ProtocolActionBreak = z.object({
   type: z.literal(ProtocolActionType.BREAK),
 });
 
+export const ProtocolActionTranscriptionPool = z.object({
+  type: z.literal(ProtocolActionType.TRANSCRIPTION_POOL),
+  label: z.string(),
+  audioFilePool: z.string().array().nonempty(),
+  volumeCalibrationKey: z.string(),
+});
+
 export const ProtocolActionTranscription = z.object({
   type: z.literal(ProtocolActionType.TRANSCRIPTION),
   label: z.string(),
-  audioFilePool: z.string().array().nonempty(),
+  audioFilePath: z.string(),
   volumeCalibrationKey: z.string(),
 });
 
@@ -30,6 +38,7 @@ export const ProtocolAction = z.union([
   ProtocolActionRepeat,
   ProtocolActionBreak,
   ProtocolActionTranscription,
+  ProtocolActionTranscriptionPool,
 ]);
 
 export type ProtocolAction = z.infer<typeof ProtocolAction>;
