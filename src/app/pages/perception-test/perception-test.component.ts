@@ -1,16 +1,33 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, ElementRef, viewChild } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { provideIcons } from '@ng-icons/core';
-import { lucideChevronsLeft, lucideUpload } from '@ng-icons/lucide';
+import {
+  lucideAudioLines,
+  lucideChevronsLeft,
+  lucideUpload,
+} from '@ng-icons/lucide';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
+import { ParticipantInfoFormComponent } from '../../components/participant-info-form/participant-info-form.component';
+import { Participant } from '../../models/participant.model';
+import { PerceptionTestProtocol } from '../../schema/perception-test-protocol.schema';
 import { PerceptionTestService } from '../../services/perception-test.service';
+
 @Component({
   selector: 'app-perception-test',
   standalone: true,
-  imports: [HlmButtonDirective, HlmIconComponent, RouterLink, NgIf, AsyncPipe],
-  providers: [provideIcons({ lucideChevronsLeft, lucideUpload })],
+  imports: [
+    HlmButtonDirective,
+    HlmIconComponent,
+    RouterLink,
+    NgIf,
+    AsyncPipe,
+    ParticipantInfoFormComponent,
+  ],
+  providers: [
+    provideIcons({ lucideChevronsLeft, lucideUpload, lucideAudioLines }),
+  ],
   templateUrl: './perception-test.component.html',
   styleUrl: './perception-test.component.css',
 })
@@ -18,7 +35,36 @@ export class PerceptionTestComponent {
   protocolFileInputRef =
     viewChild<ElementRef<HTMLInputElement>>('protocolFile');
 
-  constructor(public perceptionTestService: PerceptionTestService) {}
+  participant: Participant | null = null;
+  activeProtocol: PerceptionTestProtocol | null = null;
+
+  constructor(
+    private perceptionTestService: PerceptionTestService,
+    private router: Router
+  ) {
+    this.perceptionTestService.activeProtocol$.subscribe((newProtocol) => {
+      this.activeProtocol = newProtocol;
+    });
+
+    this.perceptionTestService.participant$.subscribe((newParticipant) => {
+      this.participant = newParticipant;
+    });
+  }
+
+  onBack() {
+    if (this.participant) {
+      this.perceptionTestService.setParticipant(null);
+    } else if (this.activeProtocol) {
+      this.perceptionTestService.clearProtocol();
+
+      const protocolFileInputRef = this.protocolFileInputRef();
+      if (protocolFileInputRef !== undefined) {
+        protocolFileInputRef.nativeElement.value = '';
+      }
+    } else {
+      this.router.navigate(['landing']);
+    }
+  }
 
   promptFileSelection() {
     const protocolFileInputRef = this.protocolFileInputRef();
@@ -47,5 +93,10 @@ export class PerceptionTestComponent {
       };
       reader.readAsText(file);
     }
+  }
+
+  onParticipantSubmit(participant: Participant) {
+    console.log('Setting participant:', participant);
+    this.perceptionTestService.setParticipant(participant);
   }
 }

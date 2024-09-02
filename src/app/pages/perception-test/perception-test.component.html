@@ -1,42 +1,72 @@
-<!-- Back btn header -->
-<div class="w-full pt-5 pl-5">
-  <a routerLink="/landing" class="text-slate-500">
-    <div class="flex items-center">
+<div class="w-full h-full flex flex-col items-stretch">
+  <!-- Back btn header -->
+  <div class="pt-5 pl-5">
+    <a
+      class="cursor-pointer w-fit flex items-center text-slate-500"
+      (click)="onBack()"
+    >
       <hlm-icon size="sm" name="lucideChevronsLeft" class="mr-1" />
       <span>back</span>
+    </a>
+  </div>
+
+  <div class="flex-1">
+    <!-- If no protocol has been loaded -->
+    <div
+      *ngIf="activeProtocol === null"
+      class="w-full h-full flex flex-col justify-center items-center"
+    >
+      <h1 class="text-sm italic text-slate-500 mb-1">
+        Seems pretty empty here...
+      </h1>
+      <p class="mb-5">Load a perception test protocol to get started.</p>
+
+      <button hlmBtn size="lg" (click)="promptFileSelection()">
+        <hlm-icon size="sm" name="lucideUpload" class="mr-1" />
+        Load Protocol
+      </button>
     </div>
-  </a>
-</div>
 
-<div class="w-full h-full">
-  <!-- If no protocol has been loaded -->
-  <div
-    *ngIf="(perceptionTestService.activeProtocol$ | async) === null"
-    class="w-full h-full flex flex-col justify-center items-center"
-  >
-    <h1 class="text-lg m-5">Seems pretty empty here...</h1>
-    <button hlmBtn size="lg" (click)="promptFileSelection()">
-      <hlm-icon size="sm" name="lucideUpload" class="mr-1" />
-      Load Protocol
-    </button>
+    <!-- Get participant information if protocol has been loaded, but no participant info has been recorded. -->
+    <div
+      *ngIf="activeProtocol != null && participant === null"
+      class="w-full h-full flex flex-col justify-center items-center gap-3"
+    >
+      <h1 class="text-2xl">Participant Information</h1>
+      <app-participant-info-form
+        (onParticipantSubmit)="onParticipantSubmit($event)"
+      />
+    </div>
+
+    <!-- Navigate to test -->
+    <div
+      *ngIf="activeProtocol != null && participant != null"
+      class="w-full h-full flex flex-col justify-center items-center gap-24"
+    >
+      <div class="font-mono">
+        <p class="text-xl mb-10">
+          Perception Test <span class="text-lime">Primed.</span>
+        </p>
+
+        <div>
+          <p>
+            <span class="font-bold text-slate-400">Participant ID:</span>
+            {{ participant.id }}
+          </p>
+          <p>
+            <span class="font-bold text-slate-400">Nativeness:</span>
+            {{ participant.isNative ? "L1" : "L2" }}
+          </p>
+        </div>
+      </div>
+
+      <button hlmBtn size="lg" routerLink="/perception-test/assessment">
+        <hlm-icon size="sm" name="lucideAudioLines" class="mr-1" />
+        Start Assessment
+      </button>
+    </div>
   </div>
-
-  <!-- Get participant information if protocol has been loaded, but no participant info has been recorded. -->
-  <div
-    *ngIf="
-      (perceptionTestService.activeProtocol$ | async) != null &&
-      (perceptionTestService.participant$ | async) === null
-    "
-    class="w-full h-full flex flex-col justify-center items-center"
-  >
-    <h1 class="text-lg m-5">Seems pretty empty here...</h1>
-    <button hlmBtn size="lg" (click)="promptFileSelection()">
-      <hlm-icon size="sm" name="lucideUpload" class="mr-1" />
-      Load Protocol
-    </button>
-  </div>
 </div>
-
 <!-- Hidden file select that will be triggered via Load Protocol btn -->
 <input
   #protocolFile

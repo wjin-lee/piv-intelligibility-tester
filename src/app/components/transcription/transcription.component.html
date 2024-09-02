@@ -1,0 +1,27 @@
+<div
+  class="w-full h-full py-14 flex flex-col justify-between gap-10"
+  [formGroup]="transcriptionForm"
+>
+  <div class="w-full flex-grow-[2] flex flex-col">
+    <p class="font-mono text-center py-5 font-bold text-2xl text-orange-400">
+      What did you hear?
+    </p>
+    <textarea
+      hlmInput
+      class="w-full flex-grow text-5xl text-center"
+      placeholder="type out what you just heard."
+      formControlName="transcription"
+      #transcriptionTextBox
+    ></textarea>
+  </div>
+
+  <div class="w-full flex-grow">
+    <p class="font-mono text-center py-5 font-bold text-2xl text-orange-400">
+      How difficult was the speech to hear?
+    </p>
+    <ngx-slider
+      [options]="INTELLIGIBILITY_SCORE_OPTIONS"
+      formControlName="intelligibilityScore"
+    ></ngx-slider>
+  </div>
+</div>

@@ -7,6 +7,7 @@ import { getTauriVersion, getVersion } from '@tauri-apps/api/app';
 
 import { RouterLink } from '@angular/router';
 import { HlmIconComponent, provideIcons } from '@spartan-ng/ui-icon-helm';
+import { invoke } from '@tauri-apps/api/core';
 
 @Component({
   selector: 'app-landing',
@@ -24,15 +25,15 @@ import { HlmIconComponent, provideIcons } from '@spartan-ng/ui-icon-helm';
 })
 export class LandingComponent {
   appVersion = 'UNKNOWN';
-  tauriVersion = 'UNKNOWN';
+  tauriVersion = 'are you running this via Tauri?';
 
   constructor() {
     // Retrieve application metadata
-    getVersion().then((version) => {
+    getVersion().then((version: string) => {
       this.appVersion = version;
     });
 
-    getTauriVersion().then((version) => {
+    getTauriVersion().then((version: string) => {
       this.tauriVersion = version;
     });
   }

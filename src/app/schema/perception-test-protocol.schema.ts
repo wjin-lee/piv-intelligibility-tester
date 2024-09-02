@@ -1,10 +1,5 @@
 import { z } from 'zod';
-import {
-  ProtocolAction,
-  ProtocolActionBreak,
-  ProtocolActionRepeat,
-  ProtocolActionTranscription,
-} from './protocol-actions.schema';
+import { ProtocolAction } from './protocol-actions.schema';
 
 export const PerceptionTestProtocol = z.object({
   id: z.string(),

@@ -11,9 +11,9 @@
   "app": {
     "windows": [
       {
-        "title": "piv-intelligibility-tester",
-        "width": 800,
-        "height": 600,
+        "title": "ASIST - Automated Speech Intelligibility Screening Tool",
+        "width": 1200,
+        "height": 900,
         "resizable": true,
         "fullscreen": false
       }
