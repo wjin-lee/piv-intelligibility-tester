@@ -33,7 +33,9 @@ async fn play_wav_file(file_path: String) -> Result<(), String> {
     // Load samples and standardise amplitude based on bits per sample.
     let samples: Vec<f32> = wav_reader
         .into_samples::<i32>()
-        .map(|s| s.unwrap() as f32 / (f32::powi(2.0, (spec.bits_per_sample - 1) as i32)))
+        .map(|s| {
+            s.unwrap() as f32 / (f32::powi(2.0, (spec.bits_per_sample - 1) as i32)) / (1 as f32)
+        })
         .collect();
 
     // Create a buffer

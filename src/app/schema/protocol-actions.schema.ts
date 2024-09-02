@@ -7,11 +7,11 @@ export enum ProtocolActionType {
 }
 
 export const ProtocolActionBreak = z.object({
-  action: z.literal(ProtocolActionType.BREAK),
+  type: z.literal(ProtocolActionType.BREAK),
 });
 
 export const ProtocolActionTranscription = z.object({
-  action: z.literal(ProtocolActionType.TRANSCRIPTION),
+  type: z.literal(ProtocolActionType.TRANSCRIPTION),
   label: z.string(),
   audioFilePool: z.string().array().nonempty(),
   volumeCalibrationKey: z.string(),
@@ -20,7 +20,7 @@ export const ProtocolActionTranscription = z.object({
 // ZodTypeAny is a placeholder we require to avoid the circular reference.
 export const ProtocolActionRepeat: z.ZodTypeAny = z.lazy(() =>
   z.object({
-    action: z.literal(ProtocolActionType.REPEAT),
+    type: z.literal(ProtocolActionType.REPEAT),
     sequence: ProtocolAction.array().nonempty(),
     count: z.number(),
   })
