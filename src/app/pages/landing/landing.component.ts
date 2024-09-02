@@ -7,6 +7,7 @@ import { getTauriVersion, getVersion } from '@tauri-apps/api/app';
 
 import { RouterLink } from '@angular/router';
 import { HlmIconComponent, provideIcons } from '@spartan-ng/ui-icon-helm';
+import { invoke } from '@tauri-apps/api/core';
 
 @Component({
   selector: 'app-landing',
