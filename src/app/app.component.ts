@@ -14,18 +14,4 @@ export class AppComponent {
   title = 'piv-intelligibility-tester';
 
   constructor() {}
-
-  playAudio(url: string) {
-    // Invoke the command
-    invoke('play_wav_file', {
-      filePath: url,
-    })
-      .then(() => {
-        console.log('Finished playing audio clip!');
-      })
-      .catch((err) => {
-        console.log('ERRORED!');
-        console.log(err);
-      });
-  }
 }

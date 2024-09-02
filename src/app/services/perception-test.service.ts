@@ -15,6 +15,7 @@ import {
 import Papa from 'papaparse';
 import hash from 'fnv1a';
 import { shuffleArrayInplace } from './utils';
+import { SettingsService } from './settings.service';
 
 export interface ProtocolStep {
   stepIndex: number;
@@ -51,7 +52,7 @@ export class PerceptionTestService {
 
   private currentStepIndex = -1;
 
-  constructor() {
+  constructor(private settingsService: SettingsService) {
     // WIP REMOVE
     this.setParticipant(new Participant('EXA-123', true));
 
@@ -64,10 +65,10 @@ export class PerceptionTestService {
     {
       "type": "TRANSCRIPTION_POOL",
       "label": "lecture_2m_0db",
-      "audioFilePool": ["1", "4",
-        "/Users/wjin/projects/SphHarmonicEncoderSuite/output/6_neon-proper-2m_order1_SPANZ_BKB_List_1_1_0_snr.wav", "/Users/wjin/projects/SphHarmonicEncoderSuite/output/6_neon-proper-10m_order1_SPANZ_BKB_List_1_1_0_snr.wav"
+      "audioFilePool": [
+        "/Users/wjin/Documents/uoa/p4p/SPANZ_BKB_List_5_16.wav"
       ],
-      "volumeCalibrationKey": "lecture"
+      "volumeCalibrationKey": "lecture_2m"
     },
     {
       "type": "BREAK"
@@ -88,11 +89,11 @@ export class PerceptionTestService {
     sequence: ProtocolAction[]
   ): { success: true } | { success: false; reason: string } {
     // Verify if all calibration keys are present
-    const calibrationKeys = this.WIP_getCalibrationKeys();
+    const calibrationKeys = this.settingsService.getCalibrationMap();
     for (const protocolStep of sequence) {
       if (
         protocolStep.action == ProtocolActionType.TRANSCRIPTION &&
-        !calibrationKeys.includes(protocolStep.volumeCalibrationKey)
+        !(protocolStep.volumeCalibrationKey in calibrationKeys)
       ) {
         return {
           success: false,

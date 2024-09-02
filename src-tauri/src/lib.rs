@@ -13,7 +13,7 @@ use hound::WavReader;
 use std::sync::Arc;
 
 #[tauri::command]
-async fn play_wav_file(file_path: String) -> Result<(), String> {
+async fn play_wav_file(file_path: String, decibel_adjustment: i32) -> Result<(), String> {
     let host = cpal::default_host();
     let default_output_device = host
         .default_output_device()
@@ -25,17 +25,20 @@ async fn play_wav_file(file_path: String) -> Result<(), String> {
     let spec = wav_reader.spec();
 
     println!(
-        "Playing {} through {} ({} channels).",
+        "Playing {} through {} ({} channels). {}db adjustment",
         file_path.clone(),
         default_output_device.name().unwrap(),
-        spec.channels
+        spec.channels,
+        decibel_adjustment
     );
 
     // Load samples and standardise amplitude based on bits per sample.
     let samples: Vec<f32> = wav_reader
         .into_samples::<i32>()
         .map(|s| {
-            s.unwrap() as f32 / (f32::powi(2.0, (spec.bits_per_sample - 1) as i32)) / (1 as f32)
+            s.unwrap() as f32 / (f32::powi(2.0, (spec.bits_per_sample - 1) as i32))
+                * ((10 as f32).powf(decibel_adjustment as f32 / 20 as f32) as f32)
+            // Global decibel adjustment for each environment.
         })
         .collect();
 

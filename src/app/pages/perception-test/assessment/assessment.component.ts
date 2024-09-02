@@ -15,6 +15,7 @@ import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { HlmIconModule, provideIcons } from '@spartan-ng/ui-icon-helm';
 import { lucideChevronsRight } from '@ng-icons/lucide';
 import { BreakComponent } from '../../../components/break/break.component';
+import { SettingsService } from '../../../services/settings.service';
 
 const AUDIO_COUNTDOWN_INTERVAL = 750;
 
@@ -44,7 +45,10 @@ export class AssessmentComponent {
   transcriptionComponentRef =
     viewChild<TranscriptionComponent>('transcription');
 
-  constructor(private perceptionTestService: PerceptionTestService) {
+  constructor(
+    private perceptionTestService: PerceptionTestService,
+    private settingsService: SettingsService
+  ) {
     this.perceptionTestService.activeProtocol$.subscribe((protocol) => {
       this.totalSteps = protocol?.sequence.length || 0;
     });
@@ -55,7 +59,11 @@ export class AssessmentComponent {
 
       switch (step?.action.type) {
         case ProtocolActionType.TRANSCRIPTION:
-          this.playAudio(step.action.audioFilePath);
+          const calibrationMap = settingsService.getCalibrationMap();
+          const requiredAdjustment =
+            settingsService.desiredNoiseDecibels -
+            calibrationMap[step.action.volumeCalibrationKey];
+          this.playAudio(step.action.audioFilePath, requiredAdjustment);
           break;
 
         case ProtocolActionType.BREAK:
@@ -94,7 +102,7 @@ export class AssessmentComponent {
     this.isStepContentValid = isStepContentValid;
   }
 
-  playAudio(url: string) {
+  playAudio(url: string, decibelAdjustment: number) {
     if (this.isPlayingAudio) {
       return;
     }
@@ -115,6 +123,7 @@ export class AssessmentComponent {
       // Invoke the backend to play multichannel audio file.
       invoke('play_wav_file', {
         filePath: url,
+        decibelAdjustment: decibelAdjustment,
       })
         .then(() => {
           console.log('Finished playing audio clip!');
