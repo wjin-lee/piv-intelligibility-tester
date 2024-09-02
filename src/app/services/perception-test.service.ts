@@ -43,6 +43,9 @@ export class PerceptionTestService {
       "id": "2024-speech-intelligibility-prelim",
       "name": "Preliminary Project #37 Intelligibility Test",
       "sequence": [
+      {
+          "type": "BREAK"
+        },
         {
           "type": "REPEAT",
           "sequence": [

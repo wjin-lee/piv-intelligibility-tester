@@ -39,10 +39,17 @@
 
       <!-- Step action content -->
       <div class="w-full px-14 flex-grow" [ngSwitch]="currentStep.action.type">
+        <!-- ACTION TYPE: Transcription -->
         <app-transcription
           *ngSwitchCase="ProtocolActionType.TRANSCRIPTION"
           (onValidityChange)="onStepContentValidityChange($event)"
           #transcription
+        />
+
+        <!-- ACTION TYPE: BREAK -->
+        <app-break
+          *ngSwitchCase="ProtocolActionType.BREAK"
+          (onValidityChange)="onStepContentValidityChange($event)"
         />
 
         <div
@@ -60,15 +67,17 @@
       </div>
 
       <!-- Continue btn -->
-      <button
-        hlmBtn
-        size="lg"
-        class="max-w-80 mb-10 text-3xl px-16 py-8 font-mono focus:bg-green-400"
-        [disabled]="!isStepContentValid"
-        (click)="onContinue()"
-      >
-        Continue
-      </button>
+      <div>
+        <button
+          hlmBtn
+          size="lg"
+          class="max-w-80 mb-10 text-3xl px-16 py-8 font-mono focus:bg-green-400"
+          [disabled]="!isStepContentValid"
+          (click)="onContinue()"
+        >
+          Continue
+        </button>
+      </div>
     </div>
   </ng-container>
 </div>

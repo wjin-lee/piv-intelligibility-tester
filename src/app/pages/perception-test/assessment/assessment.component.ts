@@ -14,6 +14,9 @@ import { CommonModule, NgIf } from '@angular/common';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { HlmIconModule, provideIcons } from '@spartan-ng/ui-icon-helm';
 import { lucideChevronsRight } from '@ng-icons/lucide';
+import { BreakComponent } from '../../../components/break/break.component';
+
+const AUDIO_COUNTDOWN_INTERVAL = 750;
 
 @Component({
   selector: 'app-assessment',
@@ -23,6 +26,7 @@ import { lucideChevronsRight } from '@ng-icons/lucide';
     CommonModule,
     HlmButtonDirective,
     HlmIconModule,
+    BreakComponent,
   ],
   providers: [provideIcons({ lucideChevronsRight })],
   templateUrl: './assessment.component.html',
@@ -54,8 +58,9 @@ export class AssessmentComponent {
           this.playAudio(step.action.audioFilePool[0]);
           break;
 
-        default:
-          console.error('Continue pressed with invalid protocol action type.');
+        case ProtocolActionType.BREAK:
+          // TODO: Play jingle
+          break;
       }
     });
   }
@@ -71,11 +76,13 @@ export class AssessmentComponent {
           transcriptionRef.resetInputs();
         }
         break;
-
-      default:
-        console.error('Continue pressed with invalid protocol action type.');
     }
     this.perceptionTestService.advanceProtocolStep();
+  }
+
+  onSubmit(event: Event) {
+    event.preventDefault();
+    this.onContinue();
   }
 
   onStepContentValidityChange(isStepContentValid: boolean) {
@@ -94,10 +101,10 @@ export class AssessmentComponent {
     this.playbackWarningOverlayText = '3';
     setTimeout(() => {
       this.playbackWarningOverlayText = '2';
-    }, 1000);
+    }, AUDIO_COUNTDOWN_INTERVAL);
     setTimeout(() => {
       this.playbackWarningOverlayText = '1';
-    }, 2000);
+    }, AUDIO_COUNTDOWN_INTERVAL * 2);
     setTimeout(() => {
       this.playbackWarningOverlayText = 'LISTEN!';
       // Invoke the backend to play multichannel audio file.
@@ -118,7 +125,7 @@ export class AssessmentComponent {
         .finally(() => {
           this.isPlayingAudio = false;
         });
-    }, 3000);
+    }, AUDIO_COUNTDOWN_INTERVAL * 3);
   }
 
   /**
