@@ -23,7 +23,9 @@ export interface ProtocolStep {
 }
 
 const CSV_HEADERS = [
-  'timestamp',
+  'playback_start',
+  'continue_pressed',
+  'step_count',
   'label',
   'filepath',
   'transcript',
@@ -151,6 +153,9 @@ export class PerceptionTestService {
   }
 
   async recordTranscriptionResult(
+    playbackEndTime: string,
+    continuePressTime: string,
+    stepCount: number,
     label: string,
     wav_filepath: string,
     transcript: string,
@@ -185,20 +190,14 @@ export class PerceptionTestService {
       });
     }
 
-    console.log([
-      new Date().toISOString(),
-      label,
-      wav_filepath,
-      transcript,
-      intelligibilityScore,
-    ]);
-
     // Append the new row to the CSV file
     const rowLine =
       Papa.unparse(
         [
           [
-            new Date().toISOString(),
+            playbackEndTime,
+            continuePressTime,
+            stepCount,
             label,
             wav_filepath,
             transcript,

@@ -41,6 +41,7 @@ export class AssessmentComponent {
 
   isPlayingAudio = false;
   playbackWarningOverlayText = '';
+  playbackEndTime: string = 'N/A';
 
   isStepContentValid = false;
 
@@ -91,6 +92,9 @@ export class AssessmentComponent {
           const transcriptFormResult = transcriptionRef.getFormState();
           console.log(transcriptFormResult);
           this.perceptionTestService.recordTranscriptionResult(
+            this.playbackEndTime,
+            new Date().toISOString(),
+            this.currentStep.stepIndex + 1,
             this.currentStep.action.label,
             this.currentStep.action.audioFilePath,
             transcriptFormResult.transcription || '',
@@ -149,6 +153,7 @@ export class AssessmentComponent {
         })
         .finally(() => {
           this.isPlayingAudio = false;
+          this.playbackEndTime = new Date().toISOString();
         });
     }, AUDIO_COUNTDOWN_INTERVAL * 3);
   }
