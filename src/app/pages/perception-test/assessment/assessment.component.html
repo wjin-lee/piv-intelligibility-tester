@@ -21,7 +21,19 @@
     </div>
   </ng-container>
 
-  <ng-container *ngIf="currentStep">
+  <ng-container *ngIf="currentStep?.stepIndex == totalSteps">
+    <div class="flex flex-col w-full h-full justify-center align-center gap-10">
+      <p class="font-mono text-center text-5xl text-green-400">
+        Perception Test Complete!
+      </p>
+      <p class="text-center text-4xl">
+        Thank you for participating in our perception test. Please let the
+        supervisor know you have finished.
+      </p>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="currentStep && currentStep.stepIndex < totalSteps">
     <div class="w-full h-full flex flex-col justify-between items-center">
       <!-- Step header -->
       <div class="flex flex-col justify-center text-center">
