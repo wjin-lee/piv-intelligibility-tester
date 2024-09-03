@@ -32,6 +32,8 @@ const CSV_HEADERS = [
   'intelligibility_score',
 ];
 
+const BREAK_INTERVAL = 10; // number of protocol steps
+
 @Injectable({
   providedIn: 'root',
 })
@@ -120,7 +122,7 @@ export class PerceptionTestService {
         newSeq.push(step);
       }
       stepCount++;
-      if (stepCount == 1) {
+      if (stepCount >= BREAK_INTERVAL) {
         newSeq.push({
           type: 'BREAK',
         });
@@ -227,6 +229,11 @@ export class PerceptionTestService {
         action: protocol.sequence[this.currentStepIndex],
         stepIndex: this.currentStepIndex,
       } as ProtocolStep;
+    } else if (protocol && this.currentStepIndex == protocol.sequence.length) {
+      currentStep = {
+        action: null,
+        stepIndex: this.currentStepIndex,
+      };
     } else {
       currentStep = null;
     }
