@@ -16,6 +16,7 @@ import Papa from 'papaparse';
 import hash from 'fnv1a';
 import { shuffleArrayInplace } from './utils';
 import { SettingsService } from './settings.service';
+import { toast } from 'ngx-sonner';
 
 export interface ProtocolStep {
   stepIndex: number;
@@ -165,7 +166,8 @@ export class PerceptionTestService {
   ) {
     const participant = this.participantSubject.getValue();
     if (participant === null) {
-      throw Error('Cannot record transcription for null participant!');
+      toast.error('Cannot record transcription for null participant!');
+      return;
     }
 
     const resultsPath = `ASIST/${participant.isNative ? 'L1' : 'L2'}-${

@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { invoke } from '@tauri-apps/api/core';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-calibration',
@@ -35,8 +36,8 @@ export class CalibrationComponent {
           console.log('Finished playing test tone!');
         })
         .catch((err: any) => {
-          console.log('ERRORED!');
-          console.log(err);
+          toast.error('Failed to play test tone. (See console for details).');
+          console.error(err);
         });
     }
   }
