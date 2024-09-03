@@ -41,11 +41,12 @@
         <p class="font-mono text-4xl">
           {{ currentStep.stepIndex + 1 }} of {{ totalSteps }}
         </p>
-        <p
-          *ngIf="currentStep.stepIndex < 3"
-          class="text-center mt-3 text-xl italic text-slate-500"
-        >
-          Don't worry - each step is pretty fast!
+        <p class="text-center mt-3 text-xl text-slate-500">
+          Use the tab [<hlm-icon
+            size="sm"
+            name="lucideArrowRightToLine"
+            class=""
+          />] to navigate with your keyboard!
         </p>
       </div>
 
@@ -83,7 +84,7 @@
         <button
           hlmBtn
           size="lg"
-          class="max-w-80 mb-10 text-3xl px-16 py-8 font-mono focus:bg-green-400"
+          class="max-w-80 mb-10 text-3xl px-16 py-8 font-mono focus:bg-orange-400"
           [disabled]="!isStepContentValid"
           (click)="onContinue()"
         >

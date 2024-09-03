@@ -13,7 +13,7 @@ import { TranscriptionComponent } from '../../../components/transcription/transc
 import { CommonModule, NgIf } from '@angular/common';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { HlmIconModule, provideIcons } from '@spartan-ng/ui-icon-helm';
-import { lucideChevronsRight } from '@ng-icons/lucide';
+import { lucideArrowRightToLine, lucideChevronsRight } from '@ng-icons/lucide';
 import { BreakComponent } from '../../../components/break/break.component';
 import { SettingsService } from '../../../services/settings.service';
 import { join } from '@tauri-apps/api/path';
@@ -31,7 +31,7 @@ const AUDIO_COUNTDOWN_INTERVAL = 750;
     HlmIconModule,
     BreakComponent,
   ],
-  providers: [provideIcons({ lucideChevronsRight })],
+  providers: [provideIcons({ lucideChevronsRight, lucideArrowRightToLine })],
   templateUrl: './assessment.component.html',
   styleUrl: './assessment.component.css',
 })
