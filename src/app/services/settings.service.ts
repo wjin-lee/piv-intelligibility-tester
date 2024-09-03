@@ -17,6 +17,7 @@ export class SettingsService {
       lecture_10m: 87,
       neon_2m: 89.5,
       neon_10m: 88,
+      negative_ten: this.desiredNoiseDecibels + 10, // -10 db adjustment
     };
   }
 }
