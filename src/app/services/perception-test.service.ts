@@ -58,25 +58,25 @@ export class PerceptionTestService {
   private currentStepIndex = -1;
 
   constructor(private settingsService: SettingsService) {
-    this.setParticipant(new Participant('as', true));
-    console.log(
-      this.loadProtocol(
-        JSON.parse(`{
-  "id": "2024-speech-intelligibility-prelim",
-  "name": "Preliminary Project #37 Intelligibility Test",
-  "audioFileBaseDir": "/",
-  "sequence": [
-    {
-      "type": "TRANSCRIPTION",
-      "label": "ABC",
-      "audioFilePath": "/Users/wjin//test/pink_output/adjusted_pinkNoise_1_combined-seminar-2m-4x7.wav",
-      "volumeCalibrationKey": "seminar_2m"
-    }
-  ]
-}
-`)
-      )
-    );
+    //     this.setParticipant(new Participant('as', true));
+    //     console.log(
+    //       this.loadProtocol(
+    //         JSON.parse(`{
+    //   "id": "2024-speech-intelligibility-prelim",
+    //   "name": "Preliminary Project #37 Intelligibility Test",
+    //   "audioFileBaseDir": "/",
+    //   "sequence": [
+    //     {
+    //       "type": "TRANSCRIPTION",
+    //       "label": "ABC",
+    //       "audioFilePath": "/Users/wjin//test/pink_output/adjusted_pinkNoise_1_combined-seminar-2m-4x7.wav",
+    //       "volumeCalibrationKey": "seminar_2m"
+    //     }
+    //   ]
+    // }
+    // `)
+    //       )
+    //     );
   }
 
   private validateActionSequence(
