@@ -1,0 +1,11 @@
+#slider-container:focus-within
+  .ngx-slider::ng-deep
+  .ngx-slider-pointer::ng-deep {
+  background-color: #fb923c !important;
+}
+
+#slider-container:focus-within
+  .ngx-slider::ng-deep
+  .ngx-slider-pointer.ngx-slider-active::after::ng-deep {
+  background-color: #fff !important;
+}

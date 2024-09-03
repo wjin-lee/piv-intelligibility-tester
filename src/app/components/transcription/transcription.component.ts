@@ -55,11 +55,14 @@ export class TranscriptionComponent {
 
   constructor() {
     // Emit validity script
-    this.transcriptionForm.controls.transcription.valueChanges.subscribe(
-      (value) => {
-        this.onValidityChange.emit(!!value);
-      }
-    );
+    setTimeout(() => {
+      this.onValidityChange.emit(false);
+      this.transcriptionForm.controls.transcription.valueChanges.subscribe(
+        (value) => {
+          this.onValidityChange.emit(!!value);
+        }
+      );
+    }, 100);
   }
 
   focusTranscriptionInput() {
