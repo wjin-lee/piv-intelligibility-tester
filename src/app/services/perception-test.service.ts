@@ -52,38 +52,7 @@ export class PerceptionTestService {
 
   private currentStepIndex = -1;
 
-  constructor(private settingsService: SettingsService) {
-    // WIP REMOVE
-    this.setParticipant(new Participant('EXA-123', true));
-
-    console.log(
-      this.loadProtocol(
-        JSON.parse(`{
-  "id": "2024-speech-intelligibility-prelim",
-  "name": "Preliminary Project #37 Intelligibility Test",
-  "sequence": [
-    {
-      "type": "TRANSCRIPTION_POOL",
-      "label": "lecture_2m_0db",
-      "audioFilePool": [
-        "/Users/wjin/Documents/uoa/p4p/SPANZ_BKB_List_5_16.wav"
-      ],
-      "volumeCalibrationKey": "lecture_2m"
-    },
-    {
-      "type": "BREAK"
-    }
-  ]
-}
-
-    `)
-      )
-    );
-  }
-
-  WIP_getCalibrationKeys() {
-    return ['lecture', 'seminar', 'neon'];
-  }
+  constructor(private settingsService: SettingsService) {}
 
   private validateActionSequence(
     sequence: ProtocolAction[]
@@ -99,7 +68,7 @@ export class PerceptionTestService {
           success: false,
           reason: `Unrecognised volume calibration key: '${protocolStep.volumeCalibrationKey}'.`,
         };
-      } else if (protocolStep.action == ProtocolActionType.REPEAT) {
+      } else if (protocolStep.action == ProtocolActionType.RANDOMISE) {
         const result = this.validateActionSequence(protocolStep.sequence);
         if (!result.success) {
           return result;
@@ -126,20 +95,17 @@ export class PerceptionTestService {
       return { success: false, reason: actionSequenceValidationResult.reason };
     }
 
+    // Get seeded random ordering of the transcriptions which is deterministic to each participant id.
+    shuffleArrayInplace(
+      parseResult.data.sequence,
+      hash(this.participantSubject.getValue()!.id)
+    );
+
     // Expand repetitions into linear list
     let newSeq: ProtocolAction[] = [];
+    let stepCount = 0;
     for (const step of parseResult.data.sequence) {
-      if (step.type == ProtocolActionType.REPEAT) {
-        for (let i = 0; i < step.count; i++) {
-          newSeq = newSeq.concat(step.sequence);
-        }
-      } else if (step.type == ProtocolActionType.TRANSCRIPTION_POOL) {
-        // Get seeded random ordering of the transcriptions in the pool which is deterministic to each participant id.
-        shuffleArrayInplace(
-          step.audioFilePool,
-          hash(this.participantSubject.getValue()!.id)
-        );
-
+      if (step.type == ProtocolActionType.TRANSCRIPTION_POOL) {
         for (const audioFilePath of step.audioFilePool) {
           newSeq = newSeq.concat({
             type: ProtocolActionType.TRANSCRIPTION,
@@ -150,6 +116,13 @@ export class PerceptionTestService {
         }
       } else {
         newSeq.push(step);
+      }
+      stepCount++;
+      if (stepCount == 1) {
+        newSeq.push({
+          type: 'BREAK',
+        });
+        stepCount = 0;
       }
     }
 
@@ -163,6 +136,7 @@ export class PerceptionTestService {
     const protocol: PerceptionTestProtocol = {
       id: parseResult.data.id,
       name: parseResult.data.name,
+      audioFileBaseDir: parseResult.data.audioFileBaseDir,
       sequence: newSeq as [ProtocolAction, ...ProtocolAction[]],
     };
 
@@ -178,6 +152,7 @@ export class PerceptionTestService {
 
   async recordTranscriptionResult(
     label: string,
+    wav_filepath: string,
     transcript: string,
     intelligibilityScore: number
   ) {
@@ -210,10 +185,10 @@ export class PerceptionTestService {
       });
     }
 
-    console.log('APPEND', [
+    console.log([
       new Date().toISOString(),
       label,
-      'FILEPATH GOES HERE',
+      wav_filepath,
       transcript,
       intelligibilityScore,
     ]);
@@ -225,7 +200,7 @@ export class PerceptionTestService {
           [
             new Date().toISOString(),
             label,
-            'FILEPATH GOES HERE',
+            wav_filepath,
             transcript,
             intelligibilityScore,
           ],

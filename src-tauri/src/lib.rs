@@ -2,8 +2,7 @@
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_fs::init())
-        .invoke_handler(tauri::generate_handler![play_wav_file])
-        .invoke_handler(tauri::generate_handler![play_test_tone])
+        .invoke_handler(tauri::generate_handler![play_wav_file, play_test_tone])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
@@ -14,7 +13,7 @@ use hound::WavReader;
 use std::sync::Arc;
 
 #[tauri::command]
-async fn play_wav_file(file_path: String, decibel_adjustment: i32) -> Result<(), String> {
+async fn play_wav_file(file_path: String, decibel_adjustment: f32) -> Result<(), String> {
     let host = cpal::default_host();
     let default_output_device = host
         .default_output_device()
@@ -38,7 +37,7 @@ async fn play_wav_file(file_path: String, decibel_adjustment: i32) -> Result<(),
         .into_samples::<i32>()
         .map(|s| {
             s.unwrap() as f32 / (f32::powi(2.0, (spec.bits_per_sample - 1) as i32))
-                * ((10 as f32).powf(decibel_adjustment as f32 / 20 as f32) as f32)
+                * ((10 as f32).powf(decibel_adjustment / 20 as f32) as f32)
             // Global decibel adjustment for each environment.
         })
         .collect();
@@ -94,13 +93,17 @@ async fn play_test_tone(speaker_index: i32) -> Result<(), String> {
         .default_output_device()
         .ok_or_else(|| "No output device available".to_string())?;
 
-    println!("Testing speaker {}.", speaker_index);
+    println!(
+        "Testing speaker {} on device {}.",
+        speaker_index,
+        default_output_device.name().unwrap()
+    );
 
     // Constants for the tone generation
     let frequency = 1000.0; // Test tone frequency
     let sample_rate = 48000 as f32;
-    let amplitude = 0.5; // VOLUME WATCH OUT
-    let channels = 2;
+    let amplitude = 0.005; // VOLUME WATCH OUT
+    let channels = 32;
 
     // Generate a 1 kHz sine wave for one period
     let test_tone: Vec<f32> = (0..sample_rate as usize)
@@ -112,6 +115,7 @@ async fn play_test_tone(speaker_index: i32) -> Result<(), String> {
         .collect();
 
     let total_samples = test_tone.len() * channels as usize;
+    println!("TOTAL SAMPLES {}", total_samples);
     let mut sample_data = vec![0.0; total_samples];
     for (i, sample) in test_tone.iter().enumerate() {
         for channel in 0..channels as usize {
@@ -124,7 +128,7 @@ async fn play_test_tone(speaker_index: i32) -> Result<(), String> {
 
     // Create a CPAL stream
     let stream_config: StreamConfig = StreamConfig {
-        channels: 2,
+        channels: channels,
         sample_rate: cpal::SampleRate(sample_rate as u32),
         buffer_size: cpal::BufferSize::Default,
     };

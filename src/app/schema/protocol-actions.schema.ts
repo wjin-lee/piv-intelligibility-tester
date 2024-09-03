@@ -3,7 +3,7 @@ import { z } from 'zod';
 export enum ProtocolActionType {
   TRANSCRIPTION_POOL = 'TRANSCRIPTION_POOL',
   TRANSCRIPTION = 'TRANSCRIPTION',
-  REPEAT = 'REPEAT',
+  RANDOMISE = 'RANDOMISE',
   BREAK = 'BREAK',
 }
 
@@ -26,16 +26,15 @@ export const ProtocolActionTranscription = z.object({
 });
 
 // ZodTypeAny is a placeholder we require to avoid the circular reference.
-export const ProtocolActionRepeat: z.ZodTypeAny = z.lazy(() =>
+export const ProtocolActionRandomise: z.ZodTypeAny = z.lazy(() =>
   z.object({
-    type: z.literal(ProtocolActionType.REPEAT),
+    type: z.literal(ProtocolActionType.RANDOMISE),
     sequence: ProtocolAction.array().nonempty(),
-    count: z.number(),
   })
 );
 
 export const ProtocolAction = z.union([
-  ProtocolActionRepeat,
+  ProtocolActionRandomise,
   ProtocolActionBreak,
   ProtocolActionTranscription,
   ProtocolActionTranscriptionPool,

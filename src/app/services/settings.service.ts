@@ -11,12 +11,12 @@ export class SettingsService {
   getCalibrationMap(): Record<string, number> {
     // Measured "ground-truth" values in decibels.
     return {
-      lecture_2m: 50,
-      lecture_10m: 50,
-      seminar_2m: 50,
-      seminar_10m: 50,
-      neon_2m: 50,
-      neon_10m: 50,
+      seminar_2m: 91.1,
+      seminar_10m: 86.6,
+      lecture_2m: 77.7,
+      lecture_10m: 87,
+      neon_2m: 89.5,
+      neon_10m: 88,
     };
   }
 }
