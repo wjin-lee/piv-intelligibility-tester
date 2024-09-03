@@ -13,6 +13,7 @@ import { ParticipantInfoFormComponent } from '../../components/participant-info-
 import { Participant } from '../../models/participant.model';
 import { PerceptionTestProtocol } from '../../schema/perception-test-protocol.schema';
 import { PerceptionTestService } from '../../services/perception-test.service';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-perception-test',
@@ -71,7 +72,7 @@ export class PerceptionTestComponent {
     if (protocolFileInputRef !== undefined) {
       protocolFileInputRef.nativeElement.click();
     } else {
-      console.error(
+      toast.error(
         'Could not locate protocol file selection in DOM! Aborting protocol file selection.'
       );
     }
@@ -88,6 +89,9 @@ export class PerceptionTestComponent {
           console.log(jsonData);
           console.log(this.perceptionTestService.loadProtocol(jsonData));
         } catch (error) {
+          toast.error(
+            'Failed to parse protocol JSON. (See console for details).'
+          );
           console.error('Error parsing JSON:', error);
         }
       };

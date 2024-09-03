@@ -17,6 +17,7 @@ import { lucideChevronsRight } from '@ng-icons/lucide';
 import { BreakComponent } from '../../../components/break/break.component';
 import { SettingsService } from '../../../services/settings.service';
 import { join } from '@tauri-apps/api/path';
+import { toast } from 'ngx-sonner';
 
 const AUDIO_COUNTDOWN_INTERVAL = 750;
 
@@ -148,7 +149,7 @@ export class AssessmentComponent {
           }
         })
         .catch((err) => {
-          console.log('ERRORED!');
+          toast.error('Could not play audio file! (See console for details)');
           console.log(err);
         })
         .finally(() => {
