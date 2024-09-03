@@ -52,15 +52,15 @@ export class PerceptionTestComponent {
   }
 
   onBack() {
-    if (this.participant) {
-      this.perceptionTestService.setParticipant(null);
-    } else if (this.activeProtocol) {
+    if (this.activeProtocol) {
       this.perceptionTestService.clearProtocol();
 
       const protocolFileInputRef = this.protocolFileInputRef();
       if (protocolFileInputRef !== undefined) {
         protocolFileInputRef.nativeElement.value = '';
       }
+    } else if (this.participant) {
+      this.perceptionTestService.setParticipant(null);
     } else {
       this.router.navigate(['landing']);
     }

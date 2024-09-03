@@ -11,9 +11,20 @@
   </div>
 
   <div class="flex-1">
+    <!-- Get participant information if no participant info has been recorded. -->
+    <div
+      *ngIf="participant === null"
+      class="w-full h-full flex flex-col justify-center items-center gap-3"
+    >
+      <h1 class="text-2xl">Participant Information</h1>
+      <app-participant-info-form
+        (onParticipantSubmit)="onParticipantSubmit($event)"
+      />
+    </div>
+
     <!-- If no protocol has been loaded -->
     <div
-      *ngIf="activeProtocol === null"
+      *ngIf="activeProtocol === null && participant != null"
       class="w-full h-full flex flex-col justify-center items-center"
     >
       <h1 class="text-sm italic text-slate-500 mb-1">
@@ -25,17 +36,6 @@
         <hlm-icon size="sm" name="lucideUpload" class="mr-1" />
         Load Protocol
       </button>
-    </div>
-
-    <!-- Get participant information if protocol has been loaded, but no participant info has been recorded. -->
-    <div
-      *ngIf="activeProtocol != null && participant === null"
-      class="w-full h-full flex flex-col justify-center items-center gap-3"
-    >
-      <h1 class="text-2xl">Participant Information</h1>
-      <app-participant-info-form
-        (onParticipantSubmit)="onParticipantSubmit($event)"
-      />
     </div>
 
     <!-- Navigate to test -->

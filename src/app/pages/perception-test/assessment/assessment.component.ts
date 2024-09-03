@@ -16,6 +16,7 @@ import { HlmIconModule, provideIcons } from '@spartan-ng/ui-icon-helm';
 import { lucideChevronsRight } from '@ng-icons/lucide';
 import { BreakComponent } from '../../../components/break/break.component';
 import { SettingsService } from '../../../services/settings.service';
+import { join } from '@tauri-apps/api/path';
 
 const AUDIO_COUNTDOWN_INTERVAL = 750;
 
@@ -36,6 +37,7 @@ const AUDIO_COUNTDOWN_INTERVAL = 750;
 export class AssessmentComponent {
   currentStep: ProtocolStep | null = null;
   totalSteps: number = 0;
+  audioFileBaseDir: string = '/';
 
   isPlayingAudio = false;
   playbackWarningOverlayText = '';
@@ -51,6 +53,7 @@ export class AssessmentComponent {
   ) {
     this.perceptionTestService.activeProtocol$.subscribe((protocol) => {
       this.totalSteps = protocol?.sequence.length || 0;
+      this.audioFileBaseDir = protocol?.audioFileBaseDir || '/';
     });
 
     // Run actions on step update
@@ -59,11 +62,18 @@ export class AssessmentComponent {
 
       switch (step?.action.type) {
         case ProtocolActionType.TRANSCRIPTION:
-          const calibrationMap = settingsService.getCalibrationMap();
+          const calibrationMap = this.settingsService.getCalibrationMap();
           const requiredAdjustment =
-            settingsService.desiredNoiseDecibels -
+            this.settingsService.desiredNoiseDecibels -
             calibrationMap[step.action.volumeCalibrationKey];
-          this.playAudio(step.action.audioFilePath, requiredAdjustment);
+          join(this.audioFileBaseDir, step.action.audioFilePath)
+            .then((filepath) => {
+              this.playAudio(filepath, requiredAdjustment);
+            })
+            .catch(() => {
+              // TODO: Error Toast
+            });
+
           break;
 
         case ProtocolActionType.BREAK:
@@ -82,6 +92,7 @@ export class AssessmentComponent {
           console.log(transcriptFormResult);
           this.perceptionTestService.recordTranscriptionResult(
             this.currentStep.action.label,
+            this.currentStep.action.audioFilePath,
             transcriptFormResult.transcription || '',
             transcriptFormResult.intelligibilityScore
           );
@@ -107,7 +118,7 @@ export class AssessmentComponent {
       return;
     }
 
-    console.log(`Play request: ${url}`);
+    console.log(`Play request: ${url} with ${decibelAdjustment} adjustment.`);
 
     // Initiate countdown
     this.isPlayingAudio = true;
