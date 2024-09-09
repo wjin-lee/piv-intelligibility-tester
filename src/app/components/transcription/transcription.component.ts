@@ -17,11 +17,20 @@ import {
   UntypedFormControl,
   Validators,
 } from '@angular/forms';
+import { HlmIconComponent, provideIcons } from '@spartan-ng/ui-icon-helm';
+import { lucideFrown, lucideLaugh } from '@ng-icons/lucide';
 
 @Component({
   selector: 'app-transcription',
   standalone: true,
-  imports: [ReactiveFormsModule, HlmInputDirective, NgxSliderModule, NgIf],
+  imports: [
+    ReactiveFormsModule,
+    HlmIconComponent,
+    HlmInputDirective,
+    NgxSliderModule,
+    NgIf,
+  ],
+  providers: [provideIcons({ lucideFrown, lucideLaugh })],
   templateUrl: './transcription.component.html',
   styleUrl: './transcription.component.css',
 })
@@ -34,7 +43,7 @@ export class TranscriptionComponent {
       { value: 0, legend: 'Very poor' },
       { value: 1 },
       { value: 2 },
-      { value: 3, legend: 'Fair' },
+      { value: 3, legend: 'Poor' },
       { value: 4 },
       { value: 5, legend: 'Average' },
       { value: 6 },
