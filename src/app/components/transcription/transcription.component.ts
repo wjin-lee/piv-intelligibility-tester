@@ -40,17 +40,17 @@ export class TranscriptionComponent {
   INTELLIGIBILITY_SCORE_OPTIONS: Options = {
     showTicksValues: true,
     stepsArray: [
-      { value: 0, legend: 'Very poor' },
+      { value: 0, legend: 'Very hard' },
       { value: 1 },
       { value: 2 },
-      { value: 3, legend: 'Poor' },
+      { value: 3, legend: 'Hard' },
       { value: 4 },
-      { value: 5, legend: 'Average' },
+      { value: 5, legend: 'Okay' },
       { value: 6 },
-      { value: 7, legend: 'Good' },
+      { value: 7, legend: 'Easy' },
       { value: 8 },
       { value: 9 },
-      { value: 10, legend: 'Excellent' },
+      { value: 10, legend: 'Very Easy' },
     ],
   };
   transcriptionTextBoxRef = viewChild<ElementRef<HTMLTextAreaElement>>(
