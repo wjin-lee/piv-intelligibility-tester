@@ -1,5 +1,7 @@
-# ASIST
+# Automated Speech Intelligibility Screening Tool — ASIST
 This is an application meant to automate the perception-transcription test protocol for part IV project #37. 
+
+![homepage](./screenshots/asist-homepage.png)
 
 ## Setup
 1. Install Node.JS version `>= 20` from https://nodejs.org/en/download \
