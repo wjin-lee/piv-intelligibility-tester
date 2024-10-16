@@ -121,10 +121,10 @@ export class PerceptionTestService {
     }
 
     // Get seeded random ordering of the transcriptions which is deterministic to each participant id.
-    shuffleArrayInplace(
-      parseResult.data.sequence,
-      hash(this.participantSubject.getValue()!.id)
-    );
+    // shuffleArrayInplace(
+    //   parseResult.data.sequence,
+    //   hash(this.participantSubject.getValue()!.id)
+    // );
 
     // Expand repetitions into linear list
     let newSeq: ProtocolAction[] = [];

@@ -11,6 +11,12 @@ export class SettingsService {
   getCalibrationMap(): Record<string, number> {
     // Measured "ground-truth" values in decibels.
     return {
+      bin_seminar_2m: 60, // -30.5
+      bin_lecture_2m: 66.6, //-23.9
+      bin_lecture_10m: 72.6, // -17.9
+      bin_atrium_2m: 58.7, // -31.8
+      bin_atrium_10m: 72.4, // -18.1
+
       seminar_2m: 93.9,
       seminar_10m: 89.1,
       lecture_2m: 79.7,
